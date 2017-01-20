@@ -28,7 +28,7 @@ public class Main {
 		MarsDroidController controller;
 		List<MarsDroid> droids;
 		
-		System.out.println("Welcome to NASA's program of Drois in Mars!");
+		System.out.println("Welcome to NASA's program of Droids in Mars!");
 		
 		try{
 			System.out.println("Please enter integers X and Y that will mark"

@@ -36,7 +36,7 @@ public class MarsDroid{
 		else if(d == 'E') direction = 1;
 		else if(d == 'S') direction = 2;
 		else if(d == 'W') direction = 3;
-		else throw new Exception("Not a valid Direction!");
+		else throw new MarsDroidException("Not a valid Direction!");
 		
 	}
 	

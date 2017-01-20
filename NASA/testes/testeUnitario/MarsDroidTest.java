@@ -1,6 +1,6 @@
 package testeUnitario;
 import equipament.MarsDroid;
-
+import equipament.MarsDroidException;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -23,6 +23,17 @@ public class MarsDroidTest {
 		assertEquals(2, r2d2.getX());
 		assertEquals(3, r2d2.getY());
 		assertEquals('S', r2d2.getDirection());
+	}
+	
+	@Test(expected = MarsDroidException.class)
+	public void testInvalidDirection()throws Exception{
+		try{
+			r2d2 = new MarsDroid(1, 1, 'L');
+		}
+		catch(MarsDroidException m){
+			assertEquals(m.getMessage(), "Not a valid Direction!");
+			throw m;
+		}
 	}
 	
 	@Test
