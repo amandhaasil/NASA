@@ -3,21 +3,39 @@ import java.util.Scanner;
 
 import controller.MarsDroidController;
 import equipament.MarsDroid;
+import equipament.MarsDroid.MapDirection;
 
 
 public class Main {
 
 	private static int x, y;
-	private static char d;
+	private static MapDirection direction;
 	
-	private static boolean processDroidPosition(String p){
+	private static boolean processDroidPosition(String p)throws Exception{
 		if(p.charAt(0)=='q') return false;
 		
 		String[] position = p.split(" ");
 
 		x = Integer.parseInt(position[0]);
 		y = Integer.parseInt(position[1]);
-		d = position[2].charAt(0);
+		
+		switch(position[2].charAt(0)){
+			case 'N':
+				direction = MapDirection.N;
+				break;
+			case 'E':
+				direction = MapDirection.E;
+				break;
+			case 'S':
+				direction = MapDirection.S;
+				break;
+			case 'W':
+				direction = MapDirection.W;
+				break;
+			default:
+				throw new Exception("This direction is no valid!");
+		}
+		
 		return true;
 	}
 	
@@ -44,7 +62,7 @@ public class Main {
 			String newPosition = scan.nextLine();
 			while(processDroidPosition(newPosition)){
 				movements = scan.nextLine();
-				controller.addNewDroid(x, y, d, movements);
+				controller.addNewDroid(x, y, direction, movements);
 				
 				newPosition = scan.nextLine();
 			}
@@ -62,6 +80,7 @@ public class Main {
 		}catch(Exception e){
 			System.err.println(e.getMessage());
 			System.err.println(e.getCause());
+			
 		}finally{
 			scan.close();
 		}

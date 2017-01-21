@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.LinkedList;
 
 import equipament.MarsDroid;
+import equipament.MarsDroid.MapDirection;
 
 /**
  * @author Amandha
@@ -14,6 +15,10 @@ import equipament.MarsDroid;
  *  ate (xMax, yMax)
  */
 public class MarsDroidController {
+	final private String nonExistentMessage = "This droid does not exist!";
+	final private String tryingToLeaveBorderMessage = "Droid attempted to leave the border.";
+	 
+	
 	int xMax, yMax;
 	private List<MarsDroid> droids = new LinkedList<MarsDroid>();
 	
@@ -29,7 +34,7 @@ public class MarsDroidController {
 		
 		//check if droid exists
 		if(n>=droids.size()){
-			throw new MarsDroidControllerException("This droid does not exist!");
+			throw new MarsDroidControllerException(nonExistentMessage);
 		}
 		moving = droids.get(n);
 		for(int i = 0; i < m.length(); i++){
@@ -41,12 +46,12 @@ public class MarsDroidController {
 				moving.turnLeft();
 			else if(aux == 'M'){
 				//se o droid nao estiver indo para fora dos limites pode se mover
-				if((moving.getDirection() == 'N' && moving.getY() != yMax)
-						|| (moving.getDirection() == 'E' && moving.getX() != xMax)
-						|| (moving.getDirection() == 'S' && moving.getY() != 0)
-						|| (moving.getDirection() == 'W' && moving.getX() != 0))
+				if((moving.getDirection() == MapDirection.N && moving.getY() != yMax)
+						|| (moving.getDirection() == MapDirection.E && moving.getX() != xMax)
+						|| (moving.getDirection() == MapDirection.S && moving.getY() != 0)
+						|| (moving.getDirection() == MapDirection.W && moving.getX() != 0))
 					moving.move();
-				else throw new MarsDroidControllerException("Droid attempted to leave the border."); 
+				else throw new MarsDroidControllerException(tryingToLeaveBorderMessage); 
 			}
 			else{
 				throw new MarsDroidControllerException("Invalid command /'" + aux + "'/."
@@ -55,7 +60,7 @@ public class MarsDroidController {
 		}
 	}
 	
-	public void addNewDroid(int x, int y, char d, String m)throws Exception{
+	public void addNewDroid(int x, int y, MapDirection d, String m)throws Exception{
 		//check if the position is valid
 		if(x<0||x>xMax||y<0||y>yMax){
 			throw new MarsDroidControllerException("You can't create Droids out of the Bounds."
