@@ -9,10 +9,11 @@ import equipament.MarsDroid;
 import equipament.MarsDroid.MapDirection;
 
 /**
- * @author Amandha
  *	Controlador de Sondas em Marte. Possivel criar novas sondas
  *	e movimenta-las na malha definida com extremidades de (0,0)
  *  ate (xMax, yMax)
+ *  
+ *  @author Amandha
  */
 public class MarsDroidController {
 	final private String nonExistentMessage = "This droid does not exist!";
