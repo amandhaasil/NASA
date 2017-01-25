@@ -8,8 +8,9 @@ import org.junit.Test;
 
 import controller.MarsDroidController;
 import controller.MarsDroidControllerException;
+import equipament.Direction;
 import equipament.MarsDroid;
-import equipament.MarsDroid.MapDirection;
+import equipament.Position;
 
 public class MarsDroidControllerTest {
 	
@@ -23,10 +24,10 @@ public class MarsDroidControllerTest {
 	
 	@Test
 	public void nonExistentDroidTest()throws Exception{
-		controller.addNewDroid(1, 2, MapDirection.N, "");
+		controller.addNewDroid(new Position(1, 2), Direction.N, null);
 		
 		try{
-			controller.moveDroidN(1, "");
+			controller.moveDroidN(1, null);
 			assertEquals(1, 0);//forcing to fail if does not throw an exception
 		}catch(MarsDroidControllerException nonExistent){
 			assertEquals(nonExistentMessage, nonExistent.getMessage());
@@ -35,13 +36,14 @@ public class MarsDroidControllerTest {
 	
 	@Test
 	public void addingNewDroidTest()throws Exception{
-		controller.addNewDroid(1, 2, MapDirection.N, "");
+		controller.addNewDroid(new Position(1, 2), Direction.N, null);
 		List<MarsDroid> check = controller.getDroids();
 		MarsDroid aux = check.get(0);
 		
-		assertEquals(1, aux.getX());
-		assertEquals(2, aux.getY());
-		assertEquals(MapDirection.N, aux.getDirection());
+		assertEquals(expected, actual);
+		
+//		assertEquals(new Position(1, 2), aux.getPosition());
+//		assertEquals(Direction.N, aux.getDirection());
 	}
 	
 	@Test

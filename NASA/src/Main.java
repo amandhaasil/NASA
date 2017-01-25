@@ -2,14 +2,14 @@ import java.util.List;
 import java.util.Scanner;
 
 import controller.MarsDroidController;
+import equipament.Direction;
 import equipament.MarsDroid;
-import equipament.MarsDroid.MapDirection;
 
 
 public class Main {
 
 	private static int x, y;
-	private static MapDirection direction;
+	private static Direction direction;
 	
 	private static boolean processDroidPosition(String p)throws Exception{
 		if(p.charAt(0)=='q') return false;
@@ -21,16 +21,16 @@ public class Main {
 		
 		switch(position[2].charAt(0)){
 			case 'N':
-				direction = MapDirection.N;
+				direction = Direction.N;
 				break;
 			case 'E':
-				direction = MapDirection.E;
+				direction = Direction.E;
 				break;
 			case 'S':
-				direction = MapDirection.S;
+				direction = Direction.S;
 				break;
 			case 'W':
-				direction = MapDirection.W;
+				direction = Direction.W;
 				break;
 			default:
 				throw new Exception("This direction is no valid!");

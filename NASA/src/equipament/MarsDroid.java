@@ -3,6 +3,8 @@
  */
 package equipament;
 
+import controller.Command;
+
 /**
  * @author Amandha
  *
@@ -19,97 +21,41 @@ public class MarsDroid{
 	 * representa Norte(N), 1 representa leste(E), 2 sul(S) e
 	 * 3 oeste(W).
 	 */
-	public enum MapDirection{
-		N, E, S, W
-	}
-	private MapDirection direction;
+
+	private Direction direction;
 	
 	/**
 	 * X e Y sao coordenadas 
 	 * onde a Sonda se encontra no plano carteziano
  	 * que mapeia marte. 
  	 */
-	private int x, y;
+	private Position position;
 
 	
 	
 	public MarsDroid(){
-		direction = MapDirection.N;
+		position = new Position(0, 0);
+		direction = Direction.N;
 	}
-	public MarsDroid(int x,int y,MapDirection direction){
-		this.x = x;
-		this.y = y;
-		this.direction = direction;
-		
-	}
-	
-	public void turnRight(){
-		switch(direction){
-			case N: 
-				direction = MapDirection.E;
-				break;
-				
-			case E:
-				direction = MapDirection.S;
-				break;
-				
-			case S:
-				direction = MapDirection.W;
-				break;
-				
-			default:
-				direction = MapDirection.N;
-				break;
-			
-		}
-	}
-	public void turnLeft(){
-		switch(direction){
-			case N: 
-				direction = MapDirection.W;
-				break;
-				
-			case W:
-				direction = MapDirection.S;
-				break;
-				
-			case S:
-				direction = MapDirection.E;
-				break;
-				
-			default:
-				direction = MapDirection.N;
-				break;
-		}
+	public MarsDroid(Position p,Direction d){
+		position = p;
+		direction = d;	
 	}
 	
-	public MapDirection getDirection(){
+	public void turn(Command c){
+		direction = direction.turn(c);
+	}
+	
+	public Direction getDirection(){
 		return direction;
 	}
 	
 	public void move(){
-		switch( direction ){
-			case N: 
-				y++;
-				break;
-			case E:
-				x++;
-				break;
-			case S:
-				y--;
-				break;
-			default:
-				x--;
-				break;
-		}
+		position = direction.move(position);
 	}
 	
-	public int getX(){
-		return x;
-	}
-	
-	public int getY(){
-		return y;
+	public Position getPosition(){
+		return position;
 	}
 	
 	

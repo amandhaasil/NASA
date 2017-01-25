@@ -5,8 +5,9 @@ package controller;
 import java.util.List;
 import java.util.LinkedList;
 
+import equipament.Direction;
 import equipament.MarsDroid;
-import equipament.MarsDroid.MapDirection;
+import equipament.Position;
 
 /**
  *	Controlador de Sondas em Marte. Possivel criar novas sondas
@@ -17,8 +18,7 @@ import equipament.MarsDroid.MapDirection;
  */
 public class MarsDroidController {
 	final private String nonExistentMessage = "This droid does not exist!";
-	final private String tryingToLeaveBorderMessage = "Droid attempted to leave the border.";
-	 
+	final private String creatingOutOfBorderMessage = "You can't create Droids out of the Bounds.";
 	
 	int xMax, yMax;
 	private List<MarsDroid> droids = new LinkedList<MarsDroid>();
@@ -29,50 +29,33 @@ public class MarsDroidController {
 	}
 	
 	
-	public void moveDroidN(int n, String m) throws Exception{
-		MarsDroid moving;
-		char aux;
-		
+	public void moveDroidN(int n, List<Command> commands) throws Exception{
 		//check if droid exists
-		if(n>=droids.size()){
+		if(n>=droids.size() || n<0){
 			throw new MarsDroidControllerException(nonExistentMessage);
 		}
-		moving = droids.get(n);
-		for(int i = 0; i < m.length(); i++){
-			aux = m.charAt(i);
+		
+		if(commands != null){			
+			MarsDroid moving = droids.get(n);
 			
-			if(aux == 'R')
-				moving.turnRight();
-			else if(aux == 'L')
-				moving.turnLeft();
-			else if(aux == 'M'){
-				//se o droid nao estiver indo para fora dos limites pode se mover
-				if((moving.getDirection() == MapDirection.N && moving.getY() != yMax)
-						|| (moving.getDirection() == MapDirection.E && moving.getX() != xMax)
-						|| (moving.getDirection() == MapDirection.S && moving.getY() != 0)
-						|| (moving.getDirection() == MapDirection.W && moving.getX() != 0))
+			for(Command command: commands){
+				if(command==Command.M)
 					moving.move();
-				else throw new MarsDroidControllerException(tryingToLeaveBorderMessage); 
-			}
-			else{
-				throw new MarsDroidControllerException("Invalid command /'" + aux + "'/."
-						+ "\nPlease only use L, R or M with no space between.");
+				else
+					moving.turn(command);
 			}
 		}
 	}
 	
-	public void addNewDroid(int x, int y, MapDirection d, String m)throws Exception{
+	public void addNewDroid(Position p, Direction d, List<Command> commands)throws Exception{
 		//check if the position is valid
-		if(x<0||x>xMax||y<0||y>yMax){
-			throw new MarsDroidControllerException("You can't create Droids out of the Bounds."
-					+ "\nMust have 0 <= x <= " + xMax
-					+ " and 0 <= y <= " + yMax);
-			
+		if(p.getX()<0||p.getX()>xMax||p.getY()<0||p.getY()>yMax){
+			throw new MarsDroidControllerException(creatingOutOfBorderMessage);
 		}
 		
-		MarsDroid newDroid = new MarsDroid(x, y, d);
+		MarsDroid newDroid = new MarsDroid(p, d);
 		droids.add(newDroid);
-		moveDroidN(droids.size() - 1, m);		
+		moveDroidN(droids.size() - 1, commands);		
 	}
 	
 	public List<MarsDroid> getDroids(){

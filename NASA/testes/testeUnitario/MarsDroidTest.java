@@ -1,9 +1,12 @@
 package testeUnitario;
+import equipament.Direction;
 import equipament.MarsDroid;
-import equipament.MarsDroid.MapDirection;
+import equipament.Position;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import controller.Command;
 
 public class MarsDroidTest {
 	
@@ -12,82 +15,34 @@ public class MarsDroidTest {
 	@Test
 	public void testDefaultInicialization(){
 		r2d2 = new MarsDroid();
-		assertEquals(0, r2d2.getX());
-		assertEquals(0, r2d2.getY());
-		assertEquals(MapDirection.N, r2d2.getDirection());
+		assertEquals(new Position(0, 0), r2d2.getPosition());
+		assertEquals(Direction.N, r2d2.getDirection());
 	}
 
 	@Test
 	public void testInicialization() throws Exception{
-		r2d2 = new MarsDroid(2, 3, MapDirection.S);
-		assertEquals(2, r2d2.getX());
-		assertEquals(3, r2d2.getY());
-		assertEquals(MapDirection.S, r2d2.getDirection());
+		r2d2 = new MarsDroid(new Position(2, 3), Direction.S);
+		assertEquals(new Position(2, 3), r2d2.getPosition());
+		assertEquals(Direction.S, r2d2.getDirection());
 	}
 	
 	
 	@Test
-	public void testFullTurns(){
+	public void testTurnMethod(){
+		//initializing with Noth
 		r2d2 = new MarsDroid();
-		assertEquals(MapDirection.N, r2d2.getDirection());
 		
-		r2d2.turnRight();
-		assertEquals(MapDirection.E, r2d2.getDirection());
+		r2d2.turn(Command.R);
+		assertEquals(Direction.E, r2d2.getDirection());
 		
-		r2d2.turnRight();
-		assertEquals(MapDirection.S, r2d2.getDirection());
-		
-		r2d2.turnRight();
-		assertEquals(MapDirection.W, r2d2.getDirection());
-		
-		r2d2.turnRight();
-		assertEquals(MapDirection.N, r2d2.getDirection());
-		
-		r2d2.turnLeft();
-		assertEquals(MapDirection.W, r2d2.getDirection());
-		
-		r2d2.turnLeft();
-		assertEquals(MapDirection.S, r2d2.getDirection());
-		
-		r2d2.turnLeft();
-		assertEquals(MapDirection.E, r2d2.getDirection());
-		
-		r2d2.turnLeft();
-		assertEquals(MapDirection.N, r2d2.getDirection());
 	}
 	
 	@Test
-	public void testMovingAround(){
+	public void testMovingMethod(){
 		r2d2 = new MarsDroid();
 		
 		r2d2.move();
-		assertEquals(0, r2d2.getX());
-		assertEquals(1, r2d2.getY());
-		assertEquals(MapDirection.N, r2d2.getDirection());
-		
-		r2d2.turnRight();
-		r2d2.move();
-		assertEquals(1, r2d2.getX());
-		assertEquals(1, r2d2.getY());
-		assertEquals(MapDirection.E, r2d2.getDirection());
-		
-		r2d2.turnLeft();
-		r2d2.move();
-		assertEquals(1, r2d2.getX());
-		assertEquals(2, r2d2.getY());
-		assertEquals(MapDirection.N, r2d2.getDirection());
-		
-		r2d2.turnLeft();
-		r2d2.move();
-		assertEquals(0, r2d2.getX());
-		assertEquals(2, r2d2.getY());
-		assertEquals(MapDirection.W, r2d2.getDirection());
-		
-		r2d2.turnLeft();
-		r2d2.move();
-		assertEquals(0, r2d2.getX());
-		assertEquals(1, r2d2.getY());
-		assertEquals(MapDirection.S, r2d2.getDirection());
+		assertEquals(new Position(0, 1), r2d2.getPosition());
 		
 	}
 	
