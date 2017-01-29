@@ -20,12 +20,11 @@ public class MarsDroidController {
 	final private String nonExistentMessage = "This droid does not exist!";
 	final private String creatingOutOfBorderMessage = "You can't create Droids out of the Bounds.";
 	
-	int xMax, yMax;
+	private Border borders;
 	private List<MarsDroid> droids = new LinkedList<MarsDroid>();
 	
-	public MarsDroidController(int xMax, int yMax){
-		this.xMax = xMax; 
-		this.yMax = yMax;
+	public MarsDroidController(Border b){
+		borders = b;
 	}
 	
 	
@@ -37,10 +36,18 @@ public class MarsDroidController {
 		
 		if(commands != null){			
 			MarsDroid moving = droids.get(n);
+			Direction thisDirection = null;
+			Position newPosition = null;
 			
-			for(Command command: commands){
-				if(command==Command.M)
-					moving.move();
+			
+			for(Command command: commands){				
+				if(command==Command.M){
+					thisDirection = moving.getDirection();
+					newPosition = thisDirection.move(moving.getPosition());
+					
+					if(borders.isInsideBorders(newPosition))
+						moving.move();
+				}
 				else
 					moving.turn(command);
 			}
@@ -49,13 +56,17 @@ public class MarsDroidController {
 	
 	public void addNewDroid(Position p, Direction d, List<Command> commands)throws Exception{
 		//check if the position is valid
-		if(p.getX()<0||p.getX()>xMax||p.getY()<0||p.getY()>yMax){
+		if(!borders.isInsideBorders(p)){
 			throw new MarsDroidControllerException(creatingOutOfBorderMessage);
 		}
 		
 		MarsDroid newDroid = new MarsDroid(p, d);
 		droids.add(newDroid);
 		moveDroidN(droids.size() - 1, commands);		
+	}
+	
+	public Border getBorders() {
+		return borders;
 	}
 	
 	public List<MarsDroid> getDroids(){

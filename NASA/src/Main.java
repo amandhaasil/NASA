@@ -1,15 +1,40 @@
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+import controller.Border;
+import controller.Command;
 import controller.MarsDroidController;
 import equipament.Direction;
 import equipament.MarsDroid;
+import equipament.Position;
 
 
 public class Main {
 
 	private static int x, y;
 	private static Direction direction;
+	
+	private static List<Command> processMovements(String m) throws Exception{
+		List<Command> commandsList = new LinkedList<Command>();
+		
+		for(int i = 0; i < m.length(); i++){
+			switch(m.charAt(i)){
+			case 'M':
+				commandsList.add(Command.M);
+				break;
+			case 'R':
+				commandsList.add(Command.R);
+				break;
+			case 'L':
+				commandsList.add(Command.L);
+				break;
+			default:
+				throw new Exception("This Command doesn't exist");
+			}
+		}
+		return commandsList;
+	}
 	
 	private static boolean processDroidPosition(String p)throws Exception{
 		if(p.charAt(0)=='q') return false;
@@ -56,13 +81,13 @@ public class Main {
 			x = Integer.parseInt(borders[0]);
 			y = Integer.parseInt(borders[1]);
 			
-			controller = new MarsDroidController(x, y);
+			controller = new MarsDroidController(new Border(x, y));
 			
 			String movements;
 			String newPosition = scan.nextLine();
 			while(processDroidPosition(newPosition)){
 				movements = scan.nextLine();
-				controller.addNewDroid(x, y, direction, movements);
+				controller.addNewDroid(new Position(x, y), direction, processMovements(movements));
 				
 				newPosition = scan.nextLine();
 			}
@@ -72,7 +97,7 @@ public class Main {
 			MarsDroid aux;
 			for (int i = 0; i < droids.size(); i++){
 				aux = droids.get(i);
-				System.out.println(aux.getX() + " " + aux.getY() + " " + aux.getDirection());
+				System.out.println(aux.getPosition().getX() + " " + aux.getPosition().getY() + " " + aux.getDirection());
 			}
 			
 			System.out.print("\n Thank you!");
